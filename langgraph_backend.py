@@ -5,6 +5,7 @@ from typing import TypedDict, Annotated
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 from langgraph.checkpoint.memory import InMemorySaver
+import os
 
 # Load env
 load_dotenv()
@@ -15,9 +16,9 @@ class ChatState(TypedDict):
 
 
 def chat_node(state:ChatState):
-    messages=ChatState['messages']
+    messages=state['messages']
     response=llm.invoke(messages)
-    return {messages:[response]}
+    return {"messages":[response]}
 
 
 workflow=StateGraph(ChatState)
@@ -28,4 +29,4 @@ workflow.add_edge("chat",END)
 
 checkpointer=InMemorySaver()
 
-app=workflow.compile(checkpointer=checkpointer)
+chatbot=workflow.compile(checkpointer=checkpointer)
