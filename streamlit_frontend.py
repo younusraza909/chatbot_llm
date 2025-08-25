@@ -33,8 +33,14 @@ if user_input:
 
     # calling langgraph backend
     langchain_messages=convert_to_langchain_message(st.session_state.messages_history)
-    response=chatbot.invoke({"messages":langchain_messages},config=config)
-    response_message=response["messages"][-1].content
-    st.session_state.messages_history.append({"role": "assistant", "content": response_message})
+    
     with st.chat_message("assistant"):
-        st.write(response_message)
+       ai_message= st.write_stream(
+           message_chunk.content for message_chunk, metadata in chatbot.stream({
+                "messages":langchain_messages
+            },
+            config=config,
+            stream_mode="messages"
+            )
+        )
+    st.session_state.messages_history.append({"role": "assistant", "content": ai_message})
