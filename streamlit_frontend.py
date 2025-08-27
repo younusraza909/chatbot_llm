@@ -21,6 +21,7 @@ def generate_thread_id():
 def update_thread_history(thread_id):
     if thread_id not in st.session_state.thread_history:
         st.session_state.thread_history.append(thread_id)
+    st.session_state.thread_id=thread_id
 
 def clear_message_state():
     st.session_state.messages_history=[]
@@ -42,11 +43,6 @@ if 'thread_history' not in st.session_state:
 # To push new thread id immediately on first run
 update_thread_history(st.session_state.thread_id)
 
-for message in st.session_state.messages_history:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
-
-conversation_thread_id=st.session_state.thread_id
 # --- Streamlit Sidebar---
 st.sidebar.title("Langgraph Chat")
 
@@ -72,6 +68,12 @@ for thread_history_id in st.session_state.thread_history:
 
 
 # --- Streamlit UI Chat Interface ---
+
+for message in st.session_state.messages_history:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
+
+conversation_thread_id=st.session_state.thread_id
 
 user_input = st.chat_input("Enter a message")
 
