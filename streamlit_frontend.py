@@ -1,5 +1,5 @@
 import streamlit as st
-from langgraph_backend import chatbot
+from langgraph_backend import chatbot,retrieve_all_threads
 from langchain_core.messages import HumanMessage, AIMessage
 import uuid
 
@@ -38,7 +38,7 @@ if "thread_id" not in st.session_state:
     st.session_state.thread_id=generate_thread_id()
 
 if 'thread_history' not in st.session_state:
-    st.session_state.thread_history=[]
+    st.session_state.thread_history=retrieve_all_threads()
 
 # To push new thread id immediately on first run
 update_thread_history(st.session_state.thread_id)
