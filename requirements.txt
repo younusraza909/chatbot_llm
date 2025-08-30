@@ -4,3 +4,5 @@ dotenv
 langchain_core
 streamlit
 uuid
+DuckDuckGoSearchRun
+langchain_community
